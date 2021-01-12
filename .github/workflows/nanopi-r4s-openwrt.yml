@@ -39,6 +39,7 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         patch -p1 < "${GITHUB_WORKSPACE}/patches/1806-modify_for_r4s.patch"
+        cat "${GITHUB_WORKSPACE}/patches/1806_kernel.seed" >> target/linux/rockchip/armv8/config-5.4
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
@@ -118,6 +119,7 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         patch -p1 < "${GITHUB_WORKSPACE}/patches/snapshot-modify_for_r4s.patch"
+        cat "${GITHUB_WORKSPACE}/patches/snapshot_kernel.seed" >> target/linux/rockchip/armv8/config-5.4
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
