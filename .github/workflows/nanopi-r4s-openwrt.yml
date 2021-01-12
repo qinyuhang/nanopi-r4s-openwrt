@@ -61,6 +61,12 @@ jobs:
         mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz" "../openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz"
         mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz" "../openwrt-18.06-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz"
         mv -f "bin/targets/rockchip/armv8/sha256sums" "../openwrt-18.06-sha256sums"
+    - name: SSH connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
+      if: failure() && (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      env:
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
     - name: Rebuild OpenWrt-18.06 to Collect Error Log
       if: failure()
       run: |
@@ -140,6 +146,12 @@ jobs:
         mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz" "../openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz"
         mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz" "../openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz"
         mv -f "bin/targets/rockchip/armv8/sha256sums" "../openwrt-snapshot-sha256sums"
+    - name: SSH connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
+      if: failure() && (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      env:
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
     - name: Rebuild OpenWrt-18.06 to Collect Error Log
       if: failure()
       run: |
