@@ -36,3 +36,24 @@
 ### Source Code
 [project-openwrt/openwrt](https://github.com/project-openwrt/openwrt)
 ### Non-profit Uses Only
+
+TODO
+diff --git a/target/linux/rockchip/patches-5.4/202-rockchip-rk3399-Overclock-and-Undervolt-from-Google-OP1.patch b/target/linux/rockchip/patches-5.4/202-rockchip-rk3399-Overclock-and-Undervolt-from-Google-OP1.patch
+new file mode 100644
+index 0000000000..d0fc1d1a0f
+--- /dev/null
++++ b/target/linux/rockchip/patches-5.4/202-rockchip-rk3399-Overclock-and-Undervolt-from-Google-OP1.patch
+@@ -0,0 +1,13 @@
++Index: linux-5.4.86/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
++===================================================================
++--- linux-5.4.86.orig/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
+++++ linux-5.4.86/arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi
++@@ -14,7 +14,7 @@
++ /dts-v1/;
++ #include <dt-bindings/input/linux-event-codes.h>
++ #include "rk3399.dtsi"
++-#include "rk3399-opp.dtsi"
+++#include "rk3399-op1-opp.dtsi"
++ 
++ / {
++ 	chosen {
