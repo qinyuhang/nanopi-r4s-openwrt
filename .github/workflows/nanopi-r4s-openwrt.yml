@@ -105,6 +105,7 @@ jobs:
         mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz" "../openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz"
         mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz" "../openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz"
         mv -f "bin/targets/rockchip/armv8/sha256sums" "../openwrt-snapshot-sha256sums"
+        tar -cxvf bin.tgz bin
     - name: Rebuild OpenWrt-Snapshot to Collect Error Log
       if: failure()
       run: |
@@ -128,6 +129,11 @@ jobs:
       with:
         name: openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz
         path: /home/runner/openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz
+    - name: Upload OpenWrt-Packages
+      uses: actions/upload-artifact@v2
+        with:
+          name: bin
+          path: /home/runner/bin.tgz
     - name: Upload OpenWrt-Snapshot Firmwares to Cloud
       timeout-minutes: 30
       run: |
