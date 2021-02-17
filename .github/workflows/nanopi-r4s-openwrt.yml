@@ -131,9 +131,9 @@ jobs:
         path: /home/runner/openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz
     - name: Upload OpenWrt-Packages
       uses: actions/upload-artifact@v2
-        with:
-          name: bin
-          path: /home/runner/bin.tgz
+      with:
+        name: bin
+        path: /home/runner/bin.tgz
     - name: Upload OpenWrt-Snapshot Firmwares to Cloud
       timeout-minutes: 30
       run: |
