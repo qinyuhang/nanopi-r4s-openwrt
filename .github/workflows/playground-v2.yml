@@ -1,0 +1,65 @@
+name: Playgroud-V2
+
+on: 
+  repository_dispatch:
+  workflow_dispatch:
+
+jobs:
+  Download_SDK:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Download from Release
+        uses: Legion2/download-release-action@v2.1.0
+        with:
+          repository: ${{ github.repository }}
+          tag: 'latest-sdk'
+          path: .
+          file: sdk-latest.tgz
+      - name: Log
+        run: |
+          ls -la
+      - name: Upload SDK
+        uses: actions/upload-artifact@v2
+        with:
+          name: sdk
+          path: ./sdk-latest.tgz
+
+  Build_Tools_Toolchain:
+    needs: [Download_SDK]
+    if: ${{ failure() }}
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Download SDK
+        uses: actions/download-artifact@v2
+        with:
+          name: sdk
+      - name: Checkout Repository
+        run: |
+          mkdir -p openwrt
+
+      - name: Prepare SDK
+        run: |
+          tar -xf sdk.tgz
+          mv sdk/build_dir openwrt
+          mv sdk/staging_dir openwrt
+      
+      - name: Final Log
+        run: |
+          tree openwrt
+
+  Build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Build Toolchain
+        run: |
+          cd "/home/runner";
+          mkdir -p sdk-c
+          touch sdk-c/staging_dir
+          touch sdk-c/build_dir
+          tar -czvf sdk-c.tgz sdk-c
+      - name: Upload SDK
+        uses: actions/upload-artifact@v2
+        with:
+          name: sdk-c
+          path: /home/runner/sdk-c.tgz
+
