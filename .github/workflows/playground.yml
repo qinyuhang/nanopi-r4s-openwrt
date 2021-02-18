@@ -60,7 +60,7 @@ jobs:
           path: /home/runner/sdk.tgz
 
   Job_D:
-    needs: [Job_D]
+    needs: [Job_C]
     runs-on: ubuntu-18.04
     steps:
       - name: Download SDK
