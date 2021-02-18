@@ -88,12 +88,12 @@ jobs:
     steps:
       - name: Download SDK
         uses: actions/download-artifact@v2
-          with:
-            name: sdk
+        with:
+          name: sdk
       - name: Download SDK-C
         uses: actions/download-artifact@v2
-          with:
-            name: sdk-c
+        with:
+          name: sdk-c
       - name: Log
         run: |
           tar -xf sdk.tgz
