@@ -41,7 +41,7 @@ jobs:
         run: |
           cd "/home/runner/openwrt"
           make download V=s -j99
-      - name Build Tools
+      - name: Build Tools
         run: |
           cd "/home/runner/openwrt"
           make tools/compile -j$[$(nproc)+1]
