@@ -45,19 +45,19 @@ jobs:
 
   Job_C:
     runs-on: ubuntu-18.04
-      steps:
-        - name: Build Toolchain
-          run: |
-            cd "/home/runner";
-            mkdir -p sdk
-            touch sdk/staging_dir
-            touch sdk/build_dir
-            tar -czvf sdk.tgz sdk
-        - name: Upload SDK
-          uses: actions/upload-artifact@v2
-          with:
-            name: sdk-c
-            path: /home/runner/sdk.tgz
+    steps:
+      - name: Build Toolchain
+        run: |
+          cd "/home/runner";
+          mkdir -p sdk
+          touch sdk/staging_dir
+          touch sdk/build_dir
+          tar -czvf sdk.tgz sdk
+      - name: Upload SDK
+        uses: actions/upload-artifact@v2
+        with:
+          name: sdk-c
+          path: /home/runner/sdk.tgz
 
   Job_D:
     needs: [Job_D]
