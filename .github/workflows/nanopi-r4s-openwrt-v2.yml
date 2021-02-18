@@ -59,9 +59,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
       - name: Download SDK
-          uses: actions/download-artifact@v2
-          with:
-            name: sdk
+        uses: actions/download-artifact@v2
+        with:
+          name: sdk
       - name: Init Building Dependencies
         env:
           DEBIAN_FRONTEND: noninteractive
