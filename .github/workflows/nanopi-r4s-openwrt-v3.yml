@@ -37,11 +37,17 @@ jobs:
           patch -p1 < "${GITHUB_WORKSPACE}/patches/snapshot-modify_for_r4s.patch"
           cp -f "${GITHUB_WORKSPACE}/configs/snapshot-config.seed" ".config"
           make defconfig
-      - name: Build Tools and Toolchain
+      - name: Make Download
         run: |
           cd "/home/runner/openwrt"
           make download V=s -j99
+      - name Build Tools
+        run: |
+          cd "/home/runner/openwrt"
           make tools/compile -j$[$(nproc)+1]
+      - name: Build Toolchain
+        run: |
+          cd "/home/runner/openwrt"
           make toolchain/compile -j$[$(nproc)+1]
       - name: Remove .git
         run: |
