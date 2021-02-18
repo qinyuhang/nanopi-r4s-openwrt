@@ -16,10 +16,10 @@ jobs:
           touch sdk/build_dir
           tar -czvf sdk.tgz sdk
       - name: Upload SDK
-      uses: actions/upload-artifact@v2
-      with:
-        name: sdk
-        path: /home/runner/sdk.tgz
+        uses: actions/upload-artifact@v2
+        with:
+          name: sdk
+          path: /home/runner/sdk.tgz
 
   Job_B:
     needs: [Job_A]
