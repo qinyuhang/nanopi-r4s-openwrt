@@ -1,0 +1,64 @@
+name: Playgroud
+
+on: 
+  repository_dispatch:
+  workflow_dispatch:
+
+jobs:
+  Download_SDK:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: S1
+        run: |
+          exit 2
+
+  Build_SDK:
+    needs: [Download_SDK]
+    if: ${{ failure() }}
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Build_SDK
+        run: |
+          echo 'Build_SDK'
+
+  Download_Success:
+    runs-on: ubuntu-18.04
+    needs: [Download_SDK]
+    if: ${{ success() }}
+    steps:
+      - name: Build Toolchain
+        run: |
+          cd "/home/runner";
+          mkdir -p sdk-c
+          touch sdk-c/staging_dir
+          touch sdk-c/build_dir
+          tar -czvf sdk-c.tgz sdk-c
+      - name: Upload SDK
+        uses: actions/upload-artifact@v2
+        with:
+          name: sdk-c
+          path: /home/runner/sdk-c.tgz
+
+  Build:
+    needs: [Build_SDK, Download_Success]
+    if: ${{ always() }}
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Download SDK
+        uses: actions/download-artifact@v2
+        with:
+          name: sdk-c
+      - name: Checkout Repository
+        run: |
+          mkdir -p openwrt
+
+      - name: Prepare SDK
+        run: |
+          tar -xf sdk-c.tgz
+          mv sdk-c/build_dir openwrt
+          mv sdk-c/staging_dir openwrt
+      
+      - name: Final Log
+        run: |
+          tree openwrt
+
