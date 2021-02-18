@@ -89,14 +89,16 @@ jobs:
           cd "/home/runner"
           git clone --branch "master" --single-branch "https://github.com/project-openwrt/openwrt" "openwrt"
           sudo chown -R runner:runner "openwrt"
-          cd "/home/runner/openwrt"
-          ./scripts/feeds update -a
-          ./scripts/feeds install -a
       - name: Prepare SDK
         run: |
           tar -xf sdk.tgz
           mv sdk/build_dir /home/runner/openwrt
           mv sdk/staging_dir /home/runner/openwrt
+      - name: Install Packages
+        run: |
+          cd "/home/runner/openwrt"
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
       - name: Apply config
         run: |
           cd "/home/runner/openwrt"
