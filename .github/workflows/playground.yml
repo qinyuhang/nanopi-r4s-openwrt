@@ -24,21 +24,21 @@ jobs:
   Job_B:
     needs: [Job_A]
     runs-on: ubuntu-18.04
-      steps:
-        - name: Download SDK
-          uses: actions/download-artifact@v2
-          with:
-            name: sdk
-        - name: Checkout Repository
-          run: |
-            mkdir -p openwrt
+    steps:
+      - name: Download SDK
+        uses: actions/download-artifact@v2
+        with:
+          name: sdk
+      - name: Checkout Repository
+        run: |
+          mkdir -p openwrt
 
-        - name: Prepare SDK
-          run: |
-            tar -xf sdk.tgz
-            mv sdk/build_dir openwrt
-            mv sdk/staging_dir openwrt
-        
-        - name: Final Log
-          run: |
-            tree openwrt
+      - name: Prepare SDK
+        run: |
+          tar -xf sdk.tgz
+          mv sdk/build_dir openwrt
+          mv sdk/staging_dir openwrt
+      
+      - name: Final Log
+        run: |
+          tree openwrt
