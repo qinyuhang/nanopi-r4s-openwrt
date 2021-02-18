@@ -93,10 +93,9 @@ jobs:
           make defconfig
       - name: Prepare SDK
         run: |
-          cd "/home/runner"
           tar -xf sdk.tgz
-          mv sdk/build_dir openwrt
-          mv sdk/staging_dir openwrt
+          mv sdk/build_dir /home/runner/openwrt
+          mv sdk/staging_dir /home/runner/openwrt
       - name: Build OpenWrt
         run: |
           cd "/home/runner/openwrt"

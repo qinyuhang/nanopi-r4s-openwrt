@@ -80,8 +80,8 @@ jobs:
           sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /usr/local/lib/android /opt/ghc /swapfile
       - name: Untar OpenWrt
         run: |
-          cd "/home/runner"
           tar -xf openwrt.tgz
+          mv openwrt /home/runner/
       - name: Continue Build OpenWrt
         run: |
           cd "/home/runner/openwrt"
