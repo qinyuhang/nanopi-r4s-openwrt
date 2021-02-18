@@ -85,12 +85,12 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Download from Release
-        uses: dsaltares/fetch-gh-release-asset@master
+        uses: Legion2/download-release-action@v2.1.0
         with:
-          version: "latest-sdk"
-          file: "latest-sdk.zip"
-          target: "sdk-latest.tgz"
-          token: ${{ secrets.YOUR_TOKEN }}
+          repository: ${{ github.repository }}
+          tag: 'latest-sdk'
+          path: .
+          file: sdk-latest.tgz
       - name: Log
         run: |
           ls -la
