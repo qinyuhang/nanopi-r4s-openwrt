@@ -81,6 +81,19 @@ jobs:
         run: |
           tree openwrt
 
+  Job_E:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Download from Release
+      uses: dsaltares/fetch-gh-release-asset@master
+      with:
+        version: "latest-sdk"
+        file: "latest-sdk.zip"
+        target: "sdk-latest.tgz"
+        token: ${{ secrets.YOUR_TOKEN }}
+      - name: Log
+        run: |
+          ls -la
 
   Job_F:
     needs: [Job_B, Job_D]
