@@ -8,6 +8,8 @@ jobs:
   Snapshot-Build-Toolcahin:
     runs-on: ubuntu-18.04
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
       - name: Init Building Dependencies
         env:
           DEBIAN_FRONTEND: noninteractive
