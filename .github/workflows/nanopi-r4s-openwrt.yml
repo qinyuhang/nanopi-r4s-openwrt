@@ -116,7 +116,7 @@ jobs:
         mkdir -p sdk
         cp -r "openwrt/build_dir" sdk
         cp -r "openwrt/staging_dir" sdk
-        tar -cxvf sdk.tgz sdk
+        tar -czvf sdk.tgz sdk
     - name: Upload Toolchain SDK
       uses: actions/upload-artifact@v2
       with:
@@ -131,7 +131,7 @@ jobs:
         mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz" "../openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz"
         mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz" "../openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz"
         mv -f "bin/targets/rockchip/armv8/sha256sums" "../openwrt-snapshot-sha256sums"
-        tar -cxvf bin.tgz bin
+        tar -czvf bin.tgz bin
     - name: Rebuild OpenWrt-Snapshot to Collect Error Log
       if: failure()
       run: |
