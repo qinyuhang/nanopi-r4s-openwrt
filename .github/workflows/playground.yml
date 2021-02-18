@@ -42,3 +42,61 @@ jobs:
       - name: Final Log
         run: |
           tree openwrt
+
+  Job_C:
+    runs-on: ubuntu-18.04
+      steps:
+        - name: Build Toolchain
+          run: |
+            cd "/home/runner";
+            mkdir -p sdk
+            touch sdk/staging_dir
+            touch sdk/build_dir
+            tar -czvf sdk.tgz sdk
+        - name: Upload SDK
+          uses: actions/upload-artifact@v2
+          with:
+            name: sdk-c
+            path: /home/runner/sdk.tgz
+
+  Job_D:
+    needs: [Job_D]
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Download SDK
+        uses: actions/download-artifact@v2
+        with:
+          name: sdk-c
+      - name: Checkout Repository
+        run: |
+          mkdir -p openwrt
+
+      - name: Prepare SDK
+        run: |
+          tar -xf sdk.tgz
+          mv sdk/build_dir openwrt
+          mv sdk/staging_dir openwrt
+      
+      - name: Final Log
+        run: |
+          tree openwrt
+
+
+  Job_F:
+    needs: [Job_B, Job_D]
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Download SDK
+        uses: actions/download-artifact@v2
+          with:
+            name: sdk
+      - name: Download SDK-C
+        uses: actions/download-artifact@v2
+          with:
+            name: sdk-c
+      - name: Log
+        run: |
+          tar -xf sdk.tgz
+          tar -xf sdk-c.tgz
+          tree .
+
