@@ -90,18 +90,20 @@ jobs:
           cp -f "${GITHUB_WORKSPACE}/configs/snapshot-config.seed" ".config"
           make defconfig
       - name: Prepare SDK
-        cd "/home/runner"
-        tar -xf sdk.tgz
-        mv sdk/build_dir openwrt
-        mv sdk/staging_dir openwrt
+        run: |
+          cd "/home/runner"
+          tar -xf sdk.tgz
+          mv sdk/build_dir openwrt
+          mv sdk/staging_dir openwrt
       - name: Build OpenWrt
-        cd "/home/runner/openwrt"
-        make donwload -j 99
-        make -j$[$(nproc)+1]
-        tar -czvf bin.tgz bin
-        mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz" "../openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz"
-        mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz" "../openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz"
-        mv -f "bin/targets/rockchip/armv8/sha256sums" "../openwrt-snapshot-sha256sums"
+        run: |
+          cd "/home/runner/openwrt"
+          make donwload -j 99
+          make -j$[$(nproc)+1]
+          tar -czvf bin.tgz bin
+          mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz" "../openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz"
+          mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz" "../openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz"
+          mv -f "bin/targets/rockchip/armv8/sha256sums" "../openwrt-snapshot-sha256sums"
       - name: Rebuild OpenWrt-Snapshot to Collect Error Log
         if: failure()
         run: |
