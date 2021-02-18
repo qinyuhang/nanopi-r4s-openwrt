@@ -1,4 +1,4 @@
-name: NanoPi R4S OpenWrt V2
+name: NanoPi R4S OpenWrt V3
 
 on: 
   repository_dispatch:
