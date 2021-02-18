@@ -49,15 +49,15 @@ jobs:
       - name: Build Toolchain
         run: |
           cd "/home/runner";
-          mkdir -p sdk
-          touch sdk/staging_dir
-          touch sdk/build_dir
-          tar -czvf sdk.tgz sdk
+          mkdir -p sdk-c
+          touch sdk-c/staging_dir
+          touch sdk-c/build_dir
+          tar -czvf sdk-c.tgz sdk-c
       - name: Upload SDK
         uses: actions/upload-artifact@v2
         with:
           name: sdk-c
-          path: /home/runner/sdk.tgz
+          path: /home/runner/sdk-c.tgz
 
   Job_D:
     needs: [Job_C]
@@ -73,7 +73,7 @@ jobs:
 
       - name: Prepare SDK
         run: |
-          tar -xf sdk.tgz
+          tar -xf sdk-c.tgz
           mv sdk/build_dir openwrt
           mv sdk/staging_dir openwrt
       
