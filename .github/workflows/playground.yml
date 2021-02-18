@@ -1,0 +1,44 @@
+name: Playgroud
+
+on: 
+  repository_dispatch:
+  workflow_dispatch:
+
+jobs:
+  Job_A:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Build Toolchain
+        run: |
+          cd "/home/runner";
+          mkdir -p sdk
+          touch sdk/staging_dir
+          touch sdk/build_dir
+          tar -czvf sdk.tgz sdk
+      - name: Upload SDK
+      uses: actions/upload-artifact@v2
+      with:
+        name: sdk
+        path: /home/runner/sdk.tgz
+
+  Job_B:
+    needs: [Job_A]
+      runs-on: ubuntu-18.04
+      steps:
+        - name: Download SDK
+          uses: actions/download-artifact@v2
+          with:
+            name: sdk
+        - name: Checkout Repository
+          run: |
+            mkdir -p openwrt
+
+        - name: Prepare SDK
+          run: |
+            tar -xf sdk.tgz
+            mv sdk/build_dir openwrt
+            mv sdk/staging_dir openwrt
+        
+        - name: Final Log
+          run: |
+            tree openwrt
