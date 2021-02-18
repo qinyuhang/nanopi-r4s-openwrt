@@ -95,7 +95,33 @@ jobs:
         cd "/home/runner/openwrt"
         ./scripts/feeds update -a
         ./scripts/feeds install -a
+    - name: Download Toolchain
+      run: |
+        echo "Download Toolcahin from last compile"
+        echo "Git checkout the repo"
+    - name: Apply config
+      run: |
+        cd "/home/runner/openwrt"
         patch -p1 < "${GITHUB_WORKSPACE}/patches/snapshot-modify_for_r4s.patch"
+        cp -f "${GITHUB_WORKSPACE}/configs/snapshot-config.seed" ".config"
+        make defconfig
+    - name: Build Tools and Toolchain
+      run: |
+        cd "/home/runner/openwrt"
+        make tools/compile -j$[$(nproc)+1]
+        make toolchain/compile -j$[$(nproc)+1]
+    - name: Prepare Toolchain SDK
+      run: |
+        cd "/home/runner"
+        mkdir -p sdk
+        cp -r "openwrt/build_dir" sdk
+        cp -r "openwrt/staging_dir" sdk
+        tar -cxvf sdk.tgz sdk
+    - name: Upload Toolchain SDK
+      uses: actions/upload-artifact@v2
+      with:
+        name: sdk
+        path: /home/runner/sdk.tgz
     - name: Build OpenWrt-Snapshot
       run: |
         cd "/home/runner/openwrt"
