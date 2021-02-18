@@ -23,7 +23,7 @@ jobs:
 
   Job_B:
     needs: [Job_A]
-      runs-on: ubuntu-18.04
+    runs-on: ubuntu-18.04
       steps:
         - name: Download SDK
           uses: actions/download-artifact@v2
