@@ -40,6 +40,7 @@ jobs:
       - name: Build Tools and Toolchain
         run: |
           cd "/home/runner/openwrt"
+          make download V=s -j99
           make tools/compile -j$[$(nproc)+1]
           make toolchain/compile -j$[$(nproc)+1]
       - name: Prepare Toolchain SDK
@@ -85,21 +86,21 @@ jobs:
           cd "/home/runner/openwrt"
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+      - name: Prepare SDK
+        run: |
+          tar -xf sdk.tgz
+          mv sdk/build_dir /home/runner/openwrt
+          mv sdk/staging_dir /home/runner/openwrt
       - name: Apply config
         run: |
           cd "/home/runner/openwrt"
           patch -p1 < "${GITHUB_WORKSPACE}/patches/snapshot-modify_for_r4s.patch"
           cp -f "${GITHUB_WORKSPACE}/configs/snapshot-config.seed" ".config"
           make defconfig
-      - name: Prepare SDK
-        run: |
-          tar -xf sdk.tgz
-          mv sdk/build_dir /home/runner/openwrt
-          mv sdk/staging_dir /home/runner/openwrt
       - name: Build OpenWrt
         run: |
           cd "/home/runner/openwrt"
-          make donwload V=s
+          make download V=s -j99
           make -j$[$(nproc)+1]
           tar -czvf bin.tgz bin
           mv -f "bin/targets/rockchip/armv8/openwrt-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz" "../openwrt-snapshot-rockchip-armv8-friendlyarm_nanopi-r4s-ext4-sysupgrade.img.gz"
