@@ -41,7 +41,7 @@ jobs:
 
   Build:
     needs: [Build_SDK, Download_Success]
-    if: ${{ nedds.Build_SDK.result == 'success' || needs.Download_Success.result == 'success' }}
+    if: ${{ needs.Build_SDK.result == 'success' || needs.Download_Success.result == 'success' }}
     runs-on: ubuntu-18.04
     steps:
       - name: Download SDK
