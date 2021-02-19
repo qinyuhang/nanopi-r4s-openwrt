@@ -38,10 +38,19 @@ jobs:
         with:
           name: sdk-c
           path: /home/runner/sdk-c.tgz
+  
+  Logic:
+    runs-on: ubuntu-18.04
+    needs: [Build_SDK, Download_Success]
+    if: ${{ always() }}
+    steps:
+      - name: Should Continue
+        run: |
+          echo ${{ needs.Build_SDK.result == 'success' || needs.Download_Success.result == 'success' }}
+
 
   Build:
-    needs: [Build_SDK, Download_Success]
-    if: ${{ needs.Build_SDK.result == 'success' || needs.Download_Success.result == 'success' }}
+    needs: [Logic]
     runs-on: ubuntu-18.04
     steps:
       - name: Download SDK
