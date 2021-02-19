@@ -171,6 +171,18 @@ jobs:
         patch -p1 < "${GITHUB_WORKSPACE}/patches/snapshot-modify_for_r4s.patch"
         cp -f "${GITHUB_WORKSPACE}/configs/snapshot-config.seed" ".config"
         make defconfig
+    - name: Make Download
+      run: |
+        cd "/home/runner/openwrt"
+        make download -j99
+    - name: Make Tool
+      run: |
+        cd "/home/runner/openwrt"
+        make tools/compile -j$[$(nproc)+1]
+    - name: Make Toolchain
+      run: |
+        cd "/home/runner/openwrt"
+        make toolchain/compile -j$[$(nproc)+1]
     - name: Build OpenWrt-Snapshot
       run: |
         cd "/home/runner/openwrt"
