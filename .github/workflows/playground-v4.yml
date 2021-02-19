@@ -46,7 +46,13 @@ jobs:
     steps:
       - name: Should Continue
         run: |
-          echo ${{ needs.Build_SDK.result == 'success' || needs.Download_Success.result == 'success' }}
+          result=${{ needs.Build_SDK.result == 'success' || needs.Download_Success.result == 'success' }}
+          echo result
+          if [ "$result" = "true" ]; then
+            echo "Strings are equal."
+          else
+            echo "Strings are not equal."
+          fi
 
 
   Build:
