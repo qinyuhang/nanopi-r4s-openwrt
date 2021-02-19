@@ -41,7 +41,6 @@ jobs:
 
   Build:
     needs: [Build_SDK, Download_Success]
-    if: ${{ always() }}
     runs-on: ubuntu-18.04
     steps:
       - name: Download SDK
