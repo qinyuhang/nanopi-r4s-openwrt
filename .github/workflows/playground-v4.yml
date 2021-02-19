@@ -57,6 +57,7 @@ jobs:
 
   Build:
     needs: [Logic]
+    if: ${{ success() }}
     runs-on: ubuntu-18.04
     steps:
       - name: Download SDK
