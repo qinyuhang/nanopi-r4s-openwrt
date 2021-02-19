@@ -16,22 +16,22 @@ on:
 jobs:
   Download_SDK:
     runs-on: ubuntu-18.04
-      steps:
-      - name: Download from Release
-        uses: Legion2/download-release-action@v2.1.0
-        with:
-          repository: ${{ github.repository }}
-          tag: 'latest-toolchain'
-          path: .
-          file: latest-toolchain.tgz
-      - name: Log
-        run: |
-          [ -f latest-toolchain.tgz ] && echo "$FILE exist." || exit 2
-      - name: Upload To Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: latest-toolchain.tgz
-          path: latest-toolchain.tgz
+    steps:
+    - name: Download from Release
+      uses: Legion2/download-release-action@v2.1.0
+      with:
+        repository: ${{ github.repository }}
+        tag: 'latest-toolchain'
+        path: .
+        file: latest-toolchain.tgz
+    - name: Log
+      run: |
+        [ -f latest-toolchain.tgz ] && echo "$FILE exist." || exit 2
+    - name: Upload To Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: latest-toolchain.tgz
+        path: latest-toolchain.tgz
 
 
   Build_SDK:
