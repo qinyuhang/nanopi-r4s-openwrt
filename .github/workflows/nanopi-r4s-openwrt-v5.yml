@@ -208,6 +208,11 @@ jobs:
         name: bin
         path: /home/runner/bin.tgz
     - name: Upload OpenWrt-Snapshot Firmwares to Cloud
+      timeout-minutes: 30
+      run: |
+        cd "/home/runner"
+        ${GITHUB_WORKSPACE}/scripts/upload_firmware.sh "FriendlyARM NanoPi R4S" "rockchip-armv8-friendlyarm_nanopi-r4s" "snapshot" "5.4" "${{ secrets.TELEGRAM_BOT_TOKEN }}" || exit 0
+  
   Cleanup-Old-Artifacts:
     needs: [Build_Openwrt]
     runs-on: ubuntu-18.04
