@@ -152,9 +152,9 @@ jobs:
         git clone --branch "master" --single-branch "https://github.com/project-openwrt/openwrt" "openwrt"
         sudo chown -R runner:runner "openwrt"
     - name: Download Toolchain
-        uses: actions/download-artifact@v2
-        with:
-          name: latest-toolchain.tgz
+      uses: actions/download-artifact@v2
+      with:
+        name: latest-toolchain.tgz
     - name: Prepare Toolchain SDK
       run: |
         tar -xf latest-toolchain.tgz
@@ -221,9 +221,9 @@ jobs:
     needs: Cleanup-Old-Artifacts
     runs-on: ubuntu-18.04
     steps:
-      - name: Cleanup Workflow Runs
-        uses: GitRML/delete-workflow-runs@v1.2.1
-        with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          retain_days: 7
+    - name: Cleanup Workflow Runs
+      uses: GitRML/delete-workflow-runs@v1.2.1
+      with:
+        token: ${{ github.token }}
+        repository: ${{ github.repository }}
+        retain_days: 7
