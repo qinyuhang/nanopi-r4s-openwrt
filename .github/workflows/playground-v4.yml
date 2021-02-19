@@ -47,18 +47,18 @@ jobs:
       - name: Should Continue
         run: |
           result=${{ needs.Build_SDK.result == 'success' || needs.Download_Success.result == 'success' }}
-          echo result
+          echo "$result"
           if [ "$result" = "true" ]; then
-            echo "Strings are equal."
+            echo "Should continue build"
           else
-            echo "Strings are not equal."
+            exit 2
           fi
 
 
   Build:
+    runs-on: ubuntu-18.04
     needs: [Logic]
     if: ${{ success() }}
-    runs-on: ubuntu-18.04
     steps:
       - name: Download SDK
         uses: actions/download-artifact@v2
