@@ -94,11 +94,7 @@ jobs:
       with:
         name: immortalwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
         path: /home/runner/openwrt/bin/targets/rockchip/armv8/immortalwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
-    - name: Upload Toolchain SDK
-      uses: actions/upload-artifact@v2
-      with:
-        name: immortalwrt-toolchain-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.bz2
-        path: /home/runner/openwrt/bin/targets/rockchip/armv8/immortalwrt-toolchain-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.bz2
+        
     - name: Delete Release
       uses: dev-drprasad/delete-tag-and-release@v0.1.3
       with:
@@ -130,17 +126,6 @@ jobs:
         asset_path: /home/runner/openwrt/bin/targets/rockchip/armv8/immortalwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
         asset_name: immortalwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
         asset_content_type: application/x-xz
-    
-    - name: Upload Release Asset
-      id: upload-release-asset-toolchain
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: /home/runner/openwrt/bin/targets/rockchip/armv8/immortalwrt-toolchain-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.bz2
-        asset_name: immortalwrt-toolchain-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.bz2
-        asset_content_type: application/x-bzip2
   
   Download_Success:
     runs-on: ubuntu-18.04
@@ -180,10 +165,6 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: immortalwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
-    - name: Download Toolchain
-      uses: actions/download-artifact@v2
-      with:
-        name: immortalwrt-toolchain-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.bz2
     - name: Prepare Toolchain SDK
       run: |
         # tar -xf latest-toolchain.tgz
