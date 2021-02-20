@@ -37,8 +37,13 @@ jobs:
     - name: Upload To Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: latest-toolchain.tgz
-        path: latest-toolchain.tgz
+        name: immortalwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
+        path: immortalwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
+    - name: Upload To Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: immortalwrt-toolchain-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.bz2
+        path: immortalwrt-toolchain-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.bz2
 
 
   Build_SDK:
@@ -79,6 +84,11 @@ jobs:
       run: |
         cd "/home/runner/openwrt"
         make -j$[$(nproc)+1]
+    - name: Rebuild to Collect Error Log
+      if: failure()
+      run: |
+        cd "/home/runner/openwrt"
+        make -j1 V=s
     - name: Upload Toolchain SDK
       uses: actions/upload-artifact@v2
       with:
