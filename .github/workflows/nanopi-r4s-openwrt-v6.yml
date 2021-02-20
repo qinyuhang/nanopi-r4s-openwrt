@@ -127,7 +127,7 @@ jobs:
   # 第一次编译 第二部分，继续编译packages
   # 这里就是触发一下 Iteration_Run 即可
   First_Run_Part_2:
-    runs-one: ubuntu-18.04
+    runs-on: ubuntu-18.04
     needs: [First_Run_Part_1]
     if: ${{ success() }}
     steps:
