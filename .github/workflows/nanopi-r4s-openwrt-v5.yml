@@ -31,7 +31,7 @@ jobs:
         file: immortalwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
     - name: Log
       run: |
-        [ -f latest-toolchain.tgz ] && echo "$FILE exist." || exit 2
+        [ -f immortalwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz ] && echo "$FILE exist." || exit 2
     - name: Upload To Artifacts
       uses: actions/upload-artifact@v2
       with:
