@@ -12,6 +12,11 @@ name: NanoPi R4S OpenWrt V5
 on: 
   repository_dispatch:
   workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
 
 jobs:
   Download_SDK:
