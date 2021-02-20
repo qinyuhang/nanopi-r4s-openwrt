@@ -15,7 +15,8 @@ jobs:
     steps:
       - name: S1
         run: |
-          Success=${{github.event.inputs.Download_REPO_SUCCESS == 'true'}}
+          result=${{github.event.inputs.Download_REPO_SUCCESS == 'true'}}
+          echo $result
           if [ "$result" = "true" ]; then
             echo "Should continue build"
           else

@@ -155,16 +155,16 @@ jobs:
         sudo -E apt-get clean -y
         sudo -E swapoff -a
         sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /usr/local/lib/android /opt/ghc /swapfile
+    - name: Download SDK
+      uses: actions/download-artifact@v2
+      with:
+        name: immortalwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
     - name: Clone Source
       run: |
         cd "/home/runner"
         git clone --branch "master" --single-branch "https://github.com/project-openwrt/openwrt" "openwrt"
         sudo chown -R runner:runner "openwrt"
-    - name: Download Toolchain
-      uses: actions/download-artifact@v2
-      with:
-        name: immortalwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
-    - name: Prepare Toolchain SDK
+    - name: Prepare buid_dir
       run: |
         # tar -xf latest-toolchain.tgz
         # mv latest-toolchain/build_dir /home/runner/openwrt
