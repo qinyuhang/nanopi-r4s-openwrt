@@ -35,6 +35,7 @@ jobs:
   First_Run_Part_2:
     runs-on: ubuntu-18.04
     needs: [First_Run_Part_1]
+    if: ${{ success() }}
     steps:
       - name: First_Run_Part_2
         run: |
@@ -67,7 +68,7 @@ jobs:
   Iteration_Run:
     runs-on: ubuntu-18.04
     needs: [Pass_Through_Download_Result, First_Run_Part_2]
-    if: ${{ always() }}
+    if: ${{ needs.Pass_Through_Download_Result.result == 'success' || needs.First_Run_Part_2.result == 'success' }}
     steps:
       - name: Iteration_Run
         run: |
