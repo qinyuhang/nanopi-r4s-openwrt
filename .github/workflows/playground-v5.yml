@@ -35,7 +35,7 @@ jobs:
   First_Run_Part_2:
     runs-on: ubuntu-18.04
     needs: [First_Run_Part_1]
-    if: ${{ success() }}
+    if: ${{ needs.First_Run_Part_1.result == success }}
     steps:
       - name: First_Run_Part_2
         run: |
