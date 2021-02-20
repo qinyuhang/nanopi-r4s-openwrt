@@ -25,7 +25,7 @@ jobs:
 
   First_Run_Part_1:
     needs: [Download_REPO]
-    if: ${{ needs.Download_REPO.result == 'failure' }}
+    if: needs.Download_REPO.result == 'failure'
     runs-on: ubuntu-18.04
     steps:
       - name: Build_SDK
@@ -35,7 +35,7 @@ jobs:
   First_Run_Part_2:
     runs-on: ubuntu-18.04
     needs: [First_Run_Part_1]
-    if: ${{ needs.First_Run_Part_1.result == 'success' }}
+    if: needs.First_Run_Part_1.result == 'success'
     steps:
       - name: First_Run_Part_2
         run: |
@@ -44,7 +44,7 @@ jobs:
   Pass_Through_Download_Result:
     runs-on: ubuntu-18.04
     needs: [Download_REPO]
-    if: ${{ needs.Download_REPO.result == 'success' }}
+    if: needs.Download_REPO.result == 'success'
     steps:
       - name: Final Log
         run: |
@@ -53,7 +53,7 @@ jobs:
   Iteration_Run:
     runs-on: ubuntu-18.04
     needs: [Pass_Through_Download_Result, First_Run_Part_2]
-    if: ${{ needs.Pass_Through_Download_Result.result == 'success' || needs.First_Run_Part_2.result == 'success' }}
+    if: needs.Pass_Through_Download_Result.result == 'success' || needs.First_Run_Part_2.result == 'success'
     steps:
       - name: Iteration_Run
         run: |
