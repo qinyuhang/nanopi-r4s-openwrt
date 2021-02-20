@@ -25,7 +25,7 @@ jobs:
 
   First_Run_Part_1:
     needs: [Download_REPO]
-    if: ${{ failure() }}
+    if: ${{ needs.Download_REPO.result == 'failure' }}
     runs-on: ubuntu-18.04
     steps:
       - name: Build_SDK
