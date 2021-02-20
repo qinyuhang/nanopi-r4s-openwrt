@@ -179,12 +179,23 @@ jobs:
     - name: Download Toolchain
       uses: actions/download-artifact@v2
       with:
-        name: latest-toolchain.tgz
+        name: immortalwrt-sdk-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.xz
+    - name: Download Toolchain
+      uses: actions/download-artifact@v2
+      with:
+        name: immortalwrt-toolchain-rockchip-armv8_gcc-8.4.0_musl.Linux-x86_64.tar.bz2
     - name: Prepare Toolchain SDK
       run: |
-        tar -xf latest-toolchain.tgz
-        mv latest-toolchain/build_dir /home/runner/openwrt
-        mv latest-toolchain/staging_dir /home/runner/openwrt
+        # tar -xf latest-toolchain.tgz
+        # mv latest-toolchain/build_dir /home/runner/openwrt
+        # mv latest-toolchain/staging_dir /home/runner/openwrt
+    - name: SSH connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
+      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      env:
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+    
     - name: Install Packages
       run: |
         cd "/home/runner/openwrt"
