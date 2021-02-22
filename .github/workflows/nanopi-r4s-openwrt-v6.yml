@@ -128,7 +128,7 @@ jobs:
         xz -T$[$(nproc)+1] bin.tar
         xz -T$[$(nproc)+1] build_dir.tar
         xz -T$[$(nproc)+1] staging_dir.tar
-        rm -rf bin build_dir staging_dir
+        rm -rf bin build_dir staging_dir dl/*
         mv bin.tar.xz /home/runner
         mv build_dir.tar.xz /home/runner
         mv staging_dir.tar.xz /home/runner
