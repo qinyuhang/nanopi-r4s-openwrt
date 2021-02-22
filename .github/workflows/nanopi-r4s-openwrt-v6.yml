@@ -23,6 +23,27 @@ jobs:
         tag: 'latest-repo'
         path: .
         file: openwrt.tar.xz
+    - name: Download from Release - bin.tar.xz
+      uses: Legion2/download-release-action@v2.1.0
+      with:
+        repository: ${{ github.repository }}
+        tag: 'latest-repo'
+        path: .
+        file: bin.tar.xz
+    - name: Download from Release - build_dir.tar.xz
+      uses: Legion2/download-release-action@v2.1.0
+      with:
+        repository: ${{ github.repository }}
+        tag: 'latest-repo'
+        path: .
+        file: build_dir.tar.xz
+    - name: Download from Release - staging_dir.tar.xz
+      uses: Legion2/download-release-action@v2.1.0
+      with:
+        repository: ${{ github.repository }}
+        tag: 'latest-repo'
+        path: .
+        file: staging_dir.tar.xz
     - name: Log
       run: |
         [ -f openwrt.tar.xz ] && echo "$FILE exist." || exit 2
@@ -31,6 +52,21 @@ jobs:
       with:
         name: openwrt.tar.xz
         path: openwrt.tar.xz
+    - name: Upload To Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: bin.tar.xz
+        path: bin.tar.xz
+    - name: Upload To Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build_dir.tar.xz
+        path: build_dir.tar.xz
+    - name: Upload To Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: staging_dir.tar.xz
+        path: staging_dir.tar.xz
 
   # 第一次编译 第一部分，只编译到 tools toolchain
   # 为了防止 Release 过大 bin build_dir staging_dir 会分开打包
