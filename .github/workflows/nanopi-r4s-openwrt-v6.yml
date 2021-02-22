@@ -33,6 +33,7 @@ jobs:
         path: openwrt.tar.xz
 
   # 第一次编译 第一部分，只编译到 tools toolchain
+  # 为了防止 Release 过大 bin build_dir staging_dir 会分开打包
   First_Run_Part_1:
     runs-on: ubuntu-18.04
     needs: [Download_REPO]
@@ -83,6 +84,17 @@ jobs:
         make toolchain/compile -j$[$(nproc)+1]
     - name: Xz openwrt
       run: |
+        cd /home/runner/openwrt
+        tar -cf bin.tar bin
+        tar -cf build_dir.tar build_dir
+        tar -cf staging_dir.tar staging_dir
+        xz -T$[$(nproc)+1] bin.tar
+        xz -T$[$(nproc)+1] build_dir.tar
+        xz -T$[$(nproc)+1] staging_dir.tar
+        rm -rf bin build_dir staging_dir
+        mv bin.tar.xz /home/runner
+        mv build_dir.tar.xz /home/runner
+        mv staging_dir.tar.xz /home/runner
         cd /home/runner
         tar -cf openwrt.tar openwrt
         xz -T$[$(nproc)+1] openwrt.tar
@@ -118,11 +130,62 @@ jobs:
         asset_name: openwrt.tar.xz
         asset_content_type: application/x-xz
 
+    - name: Upload Release Asset - bin.tar.xz
+      id: upload-release-asset-sdk
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: /home/runner/bin.tar.xz
+        asset_name: bin.tar.xz
+        asset_content_type: application/x-xz
+
+    - name: Upload Release Asset - build_dir.tar.xz
+      id: upload-release-asset-sdk
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: /home/runner/build_dir.tar.xz
+        asset_name: build_dir.tar.xz
+        asset_content_type: application/x-xz
+
+    - name: Upload Release Asset - staging_dir.tar.xz
+      id: upload-release-asset-sdk
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: /home/runner/staging_dir.tar.xz
+        asset_name: staging_dir.tar.xz
+        asset_content_type: application/x-xz
+
     - name: Upload To Artifacts
       uses: actions/upload-artifact@v2
       with:
         name: openwrt.tar.xz
         path: /home/runner/openwrt.tar.xz
+
+    - name: Upload To Artifacts - bin.tar.xz
+      uses: actions/upload-artifact@v2
+      with:
+        name: bin.tar.xz
+        path: /home/runner/bin.tar.xz
+
+    - name: Upload To Artifacts - build_dir.tar.xz
+      uses: actions/upload-artifact@v2
+      with:
+        name: build_dir.tar.xz
+        path: /home/runner/build_dir.tar.xz
+        
+    - name: Upload To Artifacts - staging_dir.tar.xz
+      uses: actions/upload-artifact@v2
+      with:
+        name: staging_dir.tar.xz
+        path: /home/runner/staging_dir.tar.xz
 
   # 第一次编译 第二部分，继续编译packages
   # 这里就是触发一下 Iteration_Run 即可
@@ -163,7 +226,7 @@ jobs:
     - name: Checker
       run: |
         should_run=${{ needs.Pass_Through_Download_Result.result == 'success' || needs.First_Run_Part_2.result == 'success' }}
-        if [$should_run = "true"]; then
+        if ["$should_run" eq "true"]; then
           echo
         else
           exit 1
@@ -188,12 +251,37 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: openwrt.tar.xz
+    - name: Download Artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: bin.tar.xz
+    - name: Download Artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: build_dir.tar.xz
+    - name: Download Artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: staging_dir.tar.xz
+
     - name: Prepare Artifacts
       run: |
         mv openwrt.tar.xz /home/runner
         cd /home/runner
         xz -d -T$[$(nproc)+1] openwrt.tar.xz
         tar -xf openwrt.tar
+        mv staging_dir.tar.xz /home/runner/openwrt
+        mv bin.tar.xz /home/runner/openwrt
+        mv build_dir.tar.xz /home/runner/openwrt
+        cd /home/runner/openwrt
+        xz -d -T$[$(nproc)+1] staging_dir.tar.xz
+        xz -d -T$[$(nproc)+1] bin.tar.xz 
+        xz -d -T$[$(nproc)+1] build_dir.tar.xz
+        tar -xf staging_dir.tar
+        tar -xf bin.tar
+        tar -xf build_dir.tar
+        
+
     - name: Git pull
       run: |
         cd /home/runner/openwrt
