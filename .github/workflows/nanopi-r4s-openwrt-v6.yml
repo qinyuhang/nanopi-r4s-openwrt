@@ -303,13 +303,12 @@ jobs:
 
     - name: Prepare Artifacts
       run: |
-        mv openwrt.tar.xz /home/runner
-        cd /home/runner
         xz -d -T$[$(nproc)+1] openwrt.tar.xz
         tar -xf openwrt.tar
+        mv openwrt /home/runner
         mv staging_dir.tar.xz /home/runner/openwrt
         mv bin.tar.xz /home/runner/openwrt
-        mv build_dir.tar.xz /home/runner/openwrt
+        mv build_dir.tar.xz /home/runner/openwrt        
         cd /home/runner/openwrt
         xz -d -T$[$(nproc)+1] staging_dir.tar.xz
         xz -d -T$[$(nproc)+1] bin.tar.xz 
