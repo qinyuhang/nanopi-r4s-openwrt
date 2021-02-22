@@ -162,7 +162,7 @@ jobs:
     steps:
     - name: Checker
       run: |
-        should_run=${{ needs.Pass_Through_Download_Result.result == "success" || needs.First_Run_Part_2.result == "success" }}
+        should_run=${{ needs.Pass_Through_Download_Result.result == 'success' || needs.First_Run_Part_2.result == 'success' }}
         if [$should_run = "true"]; then
           echo
         else
