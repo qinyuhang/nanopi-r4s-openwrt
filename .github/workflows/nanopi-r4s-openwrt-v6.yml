@@ -121,6 +121,7 @@ jobs:
     - name: Xz openwrt
       run: |
         cd /home/runner/openwrt
+        mkdir -p bin
         tar -cf bin.tar bin
         tar -cf build_dir.tar build_dir
         tar -cf staging_dir.tar staging_dir
